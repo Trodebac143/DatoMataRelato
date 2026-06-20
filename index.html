@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datomatarrelato - Resistencia Digital</title>
+    <title>DatoMataRelato - Resistencia Digital</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Estilos para el efecto de volteo de las tarjetas Mito vs Dato */
@@ -19,8 +19,8 @@
     <header class="border-b border-slate-800 bg-slate-900/50 sticky top-0 backdrop-blur z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="text-2xl font-black tracking-tighter text-red-600">DATO<span class="text-slate-100">MATARRELATO</span></span>
-                <span class="bg-red-950/50 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-900/50 font-mono">v1.0</span>
+                <span class="text-2xl font-black tracking-tighter text-red-600">Dato<span class="text-slate-100">MataRelato</span></span>
+                <span class="bg-red-950/50 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-900/50 font-mono">v1.1</span>
             </div>
             <button onclick="toggleConfig()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 cursor-pointer">
                 ⚙️ Ajustes API
@@ -108,7 +108,7 @@
     </main>
 
     <footer class="border-t border-slate-900 bg-slate-950 py-8 mt-12 text-center text-xs text-slate-600">
-        <p>© 2026 Datomatarrelato. Herramienta de pedagogía política y transparencia de datos.</p>
+        <p>© 2026 DatoMataRelato. Herramienta de pedagogía política y transparencia de datos.</p>
     </footer>
 
     <script>
@@ -131,7 +131,6 @@
                 document.getElementById('cardsGrid').innerHTML = `<div class="col-span-full bg-amber-950/20 border border-amber-900/50 text-amber-400 p-4 rounded-xl text-sm">⚠️ <strong>Configuración pendiente:</strong> Debes abrir el archivo HTML con un editor y sustituir <code>TU_ID_DE_GOOGLE_SHEETS_AQUÍ</code> por el ID real de tu hoja de cálculo.</div>`;
                 return;
             }
-            // Formato de exportación CSV de Google Sheets para lectura inmediata y limpia
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
             try {
                 const response = await fetch(url);
@@ -149,11 +148,9 @@
             const data = [];
             const categories = new Set();
 
-            // Saltar la primera fila (cabeceras)
             for(let i = 1; i < lines.length; i++) {
                 if(!lines[i].trim()) continue;
                 
-                // Expresión regular para separar por comas respetando comillas de texto largo
                 const matches = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
                 const cleanCells = matches.map(cell => cell.replace(/^"|"$/g, '').trim());
 
@@ -232,7 +229,6 @@
 
         // Filtrar tarjetas por categoría
         function filterCards(cat) {
-            // Actualizar diseño de botones
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => {
                 if(btn.textContent.toLowerCase() === cat.toLowerCase() || (cat === 'todos' && btn.textContent === 'Todos')) {
@@ -280,7 +276,6 @@
             resultadoBox.classList.remove('hidden');
             textoBox.innerHTML = `<span class="animate-pulse text-slate-500">Anatematizando el relato falaz... Conectando con Gemini...</span>`;
 
-            // Configurar el prompt según el tono seleccionado
             let promptEnfoque = "";
             if(currentTone === 'bar') promptEnfoque = "un formato pedagógico, directo y sencillo ideal para una conversación informal en un bar o una cena familiar, usando metáforas claras y sin tecnicismos complejos.";
             if(currentTone === 'twitter') promptEnfoque = "un hilo de X (Twitter) con ganchos potentes, frases cortas e impactantes, datos clave al grano y hashtags estratégicos.";
@@ -301,7 +296,6 @@
                 const data = await response.json();
                 if(data.candidates && data.candidates[0].content.parts[0].text) {
                     let respuestaIA = data.candidates[0].content.parts[0].text;
-                    // Limpieza ligera de formato markdown si fuera necesario
                     textoBox.textContent = respuestaIA;
                 } else {
                     textoBox.innerHTML = `<span class="text-red-400">Error en el formato de respuesta de la IA. Comprueba si tu clave es correcta.</span>`;
